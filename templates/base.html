@@ -1,0 +1,39 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock title %}</title>
+    <link rel="stylesheet" href="{% static "app.css" %}">
+    {% block css_files %}{% endblock css_files %}
+</head>
+<body>
+    
+    <header>
+        <div id="top-bar">
+            <h2>Forumularz PWRK</h2>
+            {% comment %} <h3>{{welcome_user}}</h3> {% endcomment %}
+        </div>
+    </header>
+
+    <nav class="main-nav">
+        <ul>
+            <li><a href="{% url "new-entry" %}" class="nav-button{% if nav_button_active == 1 %} nav-button-active{% endif %}">Nowe zgłoszenie</a></li>
+            <li><a href="{% url "all-entries" %}" class="nav-button{% if nav_button_active == 2 %} nav-button-active{% endif %}">Wszystkie zgłoszenia</a></li>
+            <li><a href="{% url "entry-handling" %}" class="nav-button{% if nav_button_active == 3 %} nav-button-active{% endif %}">Obsługa zgłoszeń</a></li>
+        </ul>
+    </nav>
+
+
+
+    {% block content %}
+    {% endblock content %}
+
+
+    {% block script %}
+    {% endblock script %}
+</body>
+</html>

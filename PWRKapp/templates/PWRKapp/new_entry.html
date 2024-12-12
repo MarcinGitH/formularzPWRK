@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}PWRK - Nowe zgłoszenie{% endblock title %}
+{% block css_files %}
+<link rel="stylesheet" href="{% static "PWRKapp/new_entry.css" %}">
+{% endblock css_files %}
+
+{% block content %}
+<div id="content-block">
+<h1 id="comp">{{comp_list}}</h1>
+</div>
+
+
+{% endblock content %}
+
+
+
+
+{% block script %}
+<script>
+    var mylist = {{comp_list|safe}};
+
+</script>
+
+{% endblock script %}
+
+

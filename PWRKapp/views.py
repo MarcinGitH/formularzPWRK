@@ -24,6 +24,22 @@ class NewEntryView(View):
         }
         return render(request, "PWRKapp/new_entry.html", context)
 
+    def post(self, request):
+        entry = EntryForm(request.POST, request.FILES)
+        if entry.is_valid():
+            entry.save()
+            return HttpResponseRedirect(reverse("new-entry"))
+
+        test_list = []
+        for i in range(1, 30000):
+            test_list.append(i)
+        context = {
+            "nav_button_active": 1,
+            "comp_list": test_list,
+            "entry_form": entry
+        }
+        return render(request, "PWRKapp/new_entry.html", context)
+
 
 class AllEntriesView(View):
     def get(self, request):

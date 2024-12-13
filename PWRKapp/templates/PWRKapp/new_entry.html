@@ -7,17 +7,73 @@
 {% endblock css_files %}
 
 {% block content %}
-<div id="content-block">
-{{entry_form}}
-</div>
 
+<section id="new-entry-form">
+    <form action="{% url "new-entry" %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div id="new-entry-flex">
+            <div class="new-entry-column new-entry-column-1">
+                <div class="form-control"> 
+                    {{entry_form.description_1.label_tag}}
+                    {{entry_form.description_1}}
+                </div>
+                <div class="form-control-inline">
+                    <div class="form-control"> 
+                        {{entry_form.type_of_employee.label_tag}}
+                        {{entry_form.type_of_employee}}
+                    </div>
+                    <div class="form-control"> 
+                        {{entry_form.type_of_tool.label_tag}}
+                        {{entry_form.type_of_tool}}
+                    </div>
+                </div>
+                <div class="form-control"> 
+                    {{entry_form.reason.label_tag}}
+                    {{entry_form.reason}}
+                </div>
+                <div class="form-control"> 
+                    {{entry_form.producer.label_tag}}
+                    {{entry_form.producer}}
+                </div>
+                <div class="form-control"> 
+                    {{entry_form.supplier.label_tag}}
+                    {{entry_form.supplier}}
+                </div>
+            </div>
 
+            <div class="new-entry-column new-entry-column-2">
+                <div class="form-control"> 
+                    {{entry_form.comments.label_tag}}
+                    {{entry_form.comments}}
+                </div>
+                <div class="form-control"> 
+                    {{entry_form.drawings_2d.label_tag}}
+                    {{entry_form.drawings_2d}}
+                </div>
+                <div class="form-control"> 
+                    {{entry_form.drawings_3d.label_tag}}
+                    {{entry_form.drawings_3d}}
+                </div>
+                <div class="form-control"> 
+                    {{entry_form.screen_catalog.label_tag}}
+                    {{entry_form.screen_catalog}}
+                </div>
+            </div>
+        </div>
+        <button id="submit-button">Wyślij</button>
+    </form>
+    {{entry_form.errors}}
+</section>
 {% endblock content %}
 
 
 
 
 {% block script %}
+
+
+
+
 <script>
     var mylist = {{comp_list|safe}};
 

@@ -33,7 +33,7 @@ body {
 .main-nav {
     width: 15rem;
     height: 100vh;
-    /* position: fixed; */
+    /* position: static; */
     /* left: 0; */
     float: left;
     background: linear-gradient(to bottom, #255a97, #7fa7d4);

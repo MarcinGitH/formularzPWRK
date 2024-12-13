@@ -59,23 +59,28 @@ body {
     background-color: #406c9e;
     border-top: 1px solid #659cdb;
     border-bottom: 1px solid #659cdb;
-    transition: ease-out, 200ms;
+    transition: ease, 100ms;
 }
 
 .main-nav .nav-button:hover,
 .main-nav .nav-button:active {
-    font-size: 1rem;
+    /* font-size: 1rem; */
+    scale: 1.05;
     background-color: #517aaa;
+    box-shadow: 5px 0 5px #306ac070;
+    border-radius: 0 15px 15px 0;
 }
 
 .main-nav .nav-button-active {
     font: inherit;
     font-weight: bold;
-    font-size: 1rem;
+    /* font-size: 1rem; */
+    scale: 1.05;
     background: linear-gradient(to right, #306097, #8aa3c4);
-    border-right: 10px solid rgba(255, 255, 255, 0.822);
+    /* border-right: 10px solid rgba(255, 255, 255, 0.822); */
     /* box-shadow: inset -1.5rem 0 1em 0.02rem white; */
-    border-radius: 5%;
+    /* border-radius: 5%; */
     pointer-events: none;
     cursor: default;
+    box-shadow: 2px 0 5px #6d7b91bd;
 }

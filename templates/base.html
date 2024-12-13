@@ -21,9 +21,9 @@
 
     <nav class="main-nav">
         <ul>
-            <li><a href="{% url "new-entry" %}" class="nav-button{% if nav_button_active == 1 %} nav-button-active{% endif %}">Nowe zgłoszenie</a></li>
-            <li><a href="{% url "all-entries" %}" class="nav-button{% if nav_button_active == 2 %} nav-button-active{% endif %}">Wszystkie zgłoszenia</a></li>
-            <li><a href="{% url "entry-handling" %}" class="nav-button{% if nav_button_active == 3 %} nav-button-active{% endif %}">Obsługa zgłoszeń</a></li>
+            <li><a href="{% url "new-entry" %}" class="nav-button{% if nav_button_active == 1 %} nav-button-active{% endif %}" draggable = "false">Nowe zgłoszenie</a></li>
+            <li><a href="{% url "all-entries" %}" class="nav-button{% if nav_button_active == 2 %} nav-button-active{% endif %}" draggable = "false">Wszystkie zgłoszenia</a></li>
+            <li><a href="{% url "entry-handling" %}" class="nav-button{% if nav_button_active == 3 %} nav-button-active{% endif %}" draggable = "false">Obsługa zgłoszeń</a></li>
         </ul>
     </nav>
 

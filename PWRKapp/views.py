@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views import View
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from .forms import EntryForm
 # Create your views here.
 
 
@@ -19,7 +20,7 @@ class NewEntryView(View):
         context = {
             "nav_button_active": 1,
             "comp_list": test_list,
-            # "welcome_user": welcome_user
+            "entry_form": EntryForm()
         }
         return render(request, "PWRKapp/new_entry.html", context)
 

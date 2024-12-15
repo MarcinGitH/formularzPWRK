@@ -8,21 +8,25 @@
 
 {% block content %}
 
+
+
 <section id="new-entry-form">
-    <form action="{% url "new-entry" %}" method="POST" enctype="multipart/form-data">
+    
+
+    <form action="{% url "new-entry" %}" method="POST" enctype="multipart/form-data" autocomplete="off">
         {% csrf_token %}
         <div id="new-entry-flex">
-            <div class="new-entry-column new-entry-column-1">
+            <div class="new-entry-column" id="new-entry-column-1">
                 <div class="form-control"> 
                     {{entry_form.description_1.label_tag}}
                     {{entry_form.description_1}}
                 </div>
                 <div class="form-control-inline">
-                    <div class="form-control"> 
+                    <div class="form-control {% if entry_form.type_of_employee.value == "Technolog"%}techno{% endif %}" id="type-of-employee-div"> 
                         {{entry_form.type_of_employee.label_tag}}
                         {{entry_form.type_of_employee}}
                     </div>
-                    <div class="form-control"> 
+                    <div class="form-control {% if entry_form.type_of_employee.value == "Technolog"%}techno{% endif %}" id="type-of-tool-div"> 
                         {{entry_form.type_of_tool.label_tag}}
                         {{entry_form.type_of_tool}}
                     </div>
@@ -41,7 +45,7 @@
                 </div>
             </div>
 
-            <div class="new-entry-column new-entry-column-2">
+            <div class="new-entry-column {% if entry_form.type_of_employee.value == "Technolog"%}techno{% endif %}" id="new-entry-column-2">
                 <div class="form-control"> 
                     {{entry_form.comments.label_tag}}
                     {{entry_form.comments}}
@@ -60,6 +64,14 @@
                 </div>
             </div>
         </div>
+
+        
+        <p>* - pole wymagane</p>
+
+        {% if messages %}
+            <p class="success-msg">{% for msg in messages %}{{msg}}{% endfor %}</p>
+        {% endif %}
+        
         <button id="submit-button">Wyślij</button>
     </form>
     {{entry_form.errors}}
@@ -76,7 +88,56 @@
 
 <script>
     var mylist = {{comp_list|safe}};
+    
 
+
+    function checkIfTechno(){
+        const typeOfEmpBtn=document.querySelector('.type-of-employee');
+        const technoButton = document.querySelector("input[id=id_type_of_employee_1]:checked");
+        const columnForm2 = document.getElementById("new-entry-column-2");
+        const typeOfToolDiv = document.getElementById("type-of-tool-div");
+        const typeOfEmployeeDiv = document.getElementById("type-of-employee-div");
+        const typeOfEmployeeRadio = document.querySelectorAll("input.type-of-tool")
+
+        typeOfEmpBtn.addEventListener("click", () => {
+        if (document.querySelector("input[id=id_type_of_employee_1]:checked")){
+            columnForm2.classList.add("techno");
+            typeOfToolDiv.classList.add("techno");
+            typeOfEmployeeDiv.classList.add("techno");
+
+            for (const element of typeOfEmployeeRadio) {
+                element.setAttribute("required", "")
+            }
+        }
+        else{
+            columnForm2.classList.remove("techno");
+            typeOfToolDiv.classList.remove("techno");
+            typeOfEmployeeDiv.classList.remove("techno");
+            for (const element of typeOfEmployeeRadio) {
+                element.removeAttribute("required")
+            }  
+        }
+    });
+    }
+
+
+    function checkIfSuccess() {
+        const successBox = document.querySelector(".success-msg");
+        if (successBox){
+                setTimeout(function() {
+                    successBox.classList.add("opacity-0");
+                }, 2000);
+
+                setTimeout(function() {
+                    successBox.classList.add("hidden");
+                }, 2500);
+
+            
+            }
+    }
+
+    checkIfTechno();
+    checkIfSuccess();
 </script>
 
 {% endblock script %}

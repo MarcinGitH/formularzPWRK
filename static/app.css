@@ -1,5 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Open+Sans:wght@400;700&display=swap');
 
+
+
+
+
+
 * {
     box-sizing: border-box;
 }
@@ -11,7 +16,7 @@ html {
 
 body {
     margin: 0;
-    background-color: #ccc;
+    background: linear-gradient(150deg, #f3f3f3, #7e7e7e);
 }
 
 #top-bar {

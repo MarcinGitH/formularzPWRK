@@ -20,9 +20,9 @@
 
 
 .new-entry-column {
-
     margin: 10px;
 }
+
 
 
 .form-control {
@@ -36,12 +36,14 @@
 }
 
 .form-control-inline {
+    display: flex;
+    flex-wrap: wrap;
     width: 100%;
 }
 
 .form-control-inline .form-control {
     display: inline-block;
-    width: fit-content;
+    /* width: fit-content;  */
 }
 
 /* Text inputs and combobox styling */
@@ -96,10 +98,6 @@
     transition: ease, 100ms;
 }
 
-.radio-select input {
-    /* appearance: none; */
-    /* visibility: hidden; */
-}
 
 .radio-select label:has(input:hover) {
     background-color: #d0e1e7;
@@ -120,10 +118,6 @@
     cursor: pointer;
 }
 
-.combobox:hover {
-    /* background-color: #d0e1e7;
-    scale: 1.02; */
-}
 
 /* textarea styling */
 textarea {
@@ -162,4 +156,65 @@ input[type="file"]::file-selector-button:hover {
 #submit-button:hover {
     background-color: #98c9db;
     scale: 1.05;
+}
+
+
+/* Niewidoczne zanim nie wybierze Technolog */
+
+#new-entry-column-2 {
+
+    display: none;
+    transition: opacity, ease, 1000ms;
+}
+
+#type-of-tool-div {
+    display: none;
+}
+
+#type-of-employee-div {
+    width: 100%;
+}
+
+/* Widoczne po wybrani Techno */
+#new-entry-column-2.techno {
+    display: block;
+}
+
+#type-of-tool-div.techno {
+    display: inline-block;
+    width: fit-content;
+}
+
+#type-of-employee-div.techno {
+    width: fit-content;
+}
+
+
+/* Wiadomosc o wyslaniu */
+
+.success-msg {
+    /* display: none; */
+
+    /* margin: auto; */
+    text-align: center;
+    background: linear-gradient(to right, #16c91077, #1a921680);
+    color: #000000;
+    font-size: 1.1rem;
+    width: 100%;
+    line-height: 50px;
+    height: 50px;
+    padding: 0 15px;
+    /* border-radius: 25px; */
+    font-weight: bold;
+    box-shadow: 0 0 8px 3px #388549;
+    opacity: 0.7;
+    transition: ease, 500ms;
+}
+
+.success-msg.opacity-0 {
+    opacity: 0;
+}
+
+.success-msg.hidden {
+    display: none;
 }

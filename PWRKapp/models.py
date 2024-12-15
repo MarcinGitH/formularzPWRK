@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.core.validators import FileExtensionValidator
 # Create your models here.
 
 
@@ -25,7 +25,7 @@ class Entry(models.Model):
     entry_status = models.CharField(
         max_length=30, null=False, default="Nowy", blank=True)
     type_of_employee = models.CharField(max_length=100, null=False)
-    type_of_tool = models.CharField(max_length=30, null=True)
+    type_of_tool = models.CharField(max_length=30, null=True, blank=True)
     reason = models.CharField(max_length=100, null=False)
     producer = models.ForeignKey(
         ProducerSupplier, on_delete=models.PROTECT, null=True, related_name="producer_data")
@@ -34,10 +34,11 @@ class Entry(models.Model):
     entry_employee = models.ForeignKey(
         Employee, on_delete=models.PROTECT, null=True)
     drawings_2d = models.FileField(
-        upload_to="drawings_2d", null=True, max_length=300)
+        upload_to="drawings_2d", null=True, max_length=300, blank=True)
     drawings_3d = models.FileField(
-        upload_to="drawings_3d", null=True, max_length=300)
+        upload_to="drawings_3d", null=True, max_length=300, blank=True)
     screen_catalog = models.FileField(
-        upload_to="screen_catalog", null=True, max_length=300)
-    comments = models.TextField(max_length=300, null=True)
-    date = models.DateField(auto_now=True)
+        upload_to="screen_catalog", null=True, max_length=300, blank=True)
+    comments = models.TextField(max_length=300, null=True, blank=True)
+    date = models.DateTimeField(
+        auto_now=True, blank=True)

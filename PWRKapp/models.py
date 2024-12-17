@@ -45,7 +45,7 @@ class Entry(models.Model):
         upload_to="drawings_3d", null=True, max_length=300, blank=True)
     screen_catalog = models.FileField(
         upload_to="screen_catalog", null=True, max_length=300, blank=True)
-    comments = models.TextField(max_length=300, null=True, blank=True)
+    comments = models.TextField(max_length=1000, null=True, blank=True)
     entry_date = models.DateTimeField(
         auto_now=True, blank=True)
     change_date = models.DateTimeField(

@@ -150,7 +150,7 @@ tr:nth-of-type(even) {
     /* padding: 15px; */
     box-shadow: 6px 6px 10px #1b1b1b;
     border-radius: 25px;
-    width: fit-content;
+    width: 800px;
     height: fit-content;
     max-width: 1000px;
     display: none;
@@ -193,7 +193,7 @@ tr:nth-of-type(even) {
     top: 50%;
     right: 0;
     transform: translate(0, -50%);
-    background-color: #79add8;
+    background-color: #4294d6;
     color: white;
     border: none;
     /* width: 50px; */
@@ -204,11 +204,13 @@ tr:nth-of-type(even) {
 }
 
 .data-popup .popup-close:hover {
-    background-color: rgb(151, 191, 221);
+    background-color: #3a7db4;
     cursor: pointer;
 }
 
 .popup-content {
+    display: flex;
+    flex-direction: column;
     padding: 30px 40px;
 }
 
@@ -216,9 +218,10 @@ tr:nth-of-type(even) {
 
     height: 100%;
     padding: 20px;
+    width: 100%;
     border-collapse: collapse;
-    table-layout: auto;
-    max-width: 500px;
+    table-layout: fixed;
+    /* max-width: 500px; */
     background-color: #f1f1f1;
 
 
@@ -247,7 +250,71 @@ tr:nth-of-type(even) {
 }
 
 
+.popup-table a {
+    margin: 0;
+    display: block;
+    margin: auto;
+    width: fit-content;
+    text-decoration: none;
+    color: #bbbbbb;
+    background-color: #616161;
+    padding: 10px;
+    border-radius: 10px;
+}
 
+.popup-table a[href] {
+    color: #ffffff;
+    background-color: #3f7941;
+    transition: ease, 200ms;
+}
+
+.popup-table a[href]:hover {
+    scale: 1.05;
+    background-color: #619c63;
+}
+
+.popup-comments-container {
+    display: inline-block;
+    height: fit-content;
+    max-height: 200px;
+    /* width: 100px; */
+    width: 100%;
+    /* border: 1px solid black; */
+    /* padding: 10px; */
+    margin-top: 20px;
+}
+
+#popup-comments-div {
+    /* box-sizing: border-box; */
+    width: 100%;
+    height: fit-content;
+    min-height: 100px;
+    max-height: 200px;
+    border: 1px solid black;
+    border-radius: 10px;
+    box-shadow: 3px 3px 5px black;
+    /* padding: 10px; */
+    /* margin: 20px; */
+}
+
+.popup-comments-label {
+    font-weight: bold;
+    margin: 0;
+    /* padding: 10px; */
+}
+
+#popup-comments-div {
+    overflow-y: auto;
+}
+
+#popup-comments {
+
+    cursor: text;
+    margin: 5px;
+    user-select: text;
+    word-wrap: break-word;
+
+}
 
 
 

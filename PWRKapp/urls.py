@@ -5,6 +5,7 @@ urlpatterns = [
     path("", views.StartingPageView.as_view(), name="starting-page"),
     path("new-entry", views.NewEntryView.as_view(), name="new-entry"),
     path("all-entries", views.AllEntriesView.as_view(), name="all-entries"),
-    path("entry-handling", views.EntryHandlingView.as_view(), name="entry-handling")
-
+    path("entry-handling", views.EntryHandlingView.as_view(), name="entry-handling"),
+    path("download/<str:catalog>/<str:file_name>",
+         views.download, name="download-handling")
 ]

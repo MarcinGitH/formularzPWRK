@@ -1,12 +1,15 @@
 from django.shortcuts import render
 from django.views import View
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, FileResponse, HttpResponseNotFound
 from django.urls import reverse
 from .forms import EntryForm
 from .models import Entry
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.utils.dateparse import parse_date
+import os
+from django.conf import settings
+from django.db.models import Q
 # Create your views here.
 
 
@@ -96,3 +99,24 @@ class EntryHandlingView(View):
             "nav_button_active": 3
         }
         return render(request, "PWRKapp/new_entry.html", context)
+
+
+def download(request, catalog, file_name):
+    db_file_path = catalog + "/" + file_name
+    file = os.path.join(settings.BASE_DIR, "uploads/" + db_file_path)
+    if os.path.isfile(file):
+        fileOpened = open(file, "rb")
+        return FileResponse(fileOpened)
+    else:
+        file_records = Entry.objects.filter(Q(drawings_2d=db_file_path) | Q(
+            drawings_3d=db_file_path) | Q(screen_catalog=db_file_path))
+        for file_rec in file_records:
+            if catalog == "drawings_2d":
+                file_rec.drawings_2d = None
+                file_rec.save()
+            elif catalog == "drawings_3d":
+                file_rec.drawings_3d = None
+                file_rec.save()
+            elif catalog == "screen_catalog":
+                file_rec.screen_catalog = None
+                file_rec.save()

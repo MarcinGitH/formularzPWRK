@@ -153,15 +153,21 @@
             </tr>
             <tr>
                 <td>Rysunek 2D:</td>
-                <td id="popup-drawings_2d"></td>
+                <td >
+                    <a id="popup-drawings_2d" download >Brak pliku</a>
+                </td>
             </tr>
             <tr>
                 <td>Rysunek 3D:</td>
-                <td id="popup-drawings_3d"></td>
+                <td >
+                    <a id="popup-drawings_3d" download >Brak pliku</a>
+                </td>
             </tr>
             <tr>
                 <td>Screen z katalogu:</td>
-                <td id="popup-screen_catalog"></td>
+                <td>
+                    <a id="popup-screen_catalog" download >Brak pliku</a>
+                </td>
             </tr>
             <tr>
                 <td>Data zgłoszenia:</td>
@@ -175,14 +181,17 @@
                 <td>Obsługujący zgłoszenie:</td>
                 <td id="popup-manage_employee"></td>
             </tr>
+            
         </table>
 
-        <div class="popup-comments=container">
+        <div class="popup-comments-container">
+            <p class="popup-comments-label">Komentarz:</p>
             <div id="popup-comments-div">
                 <p id="popup-comments"></p>
             </div>
-        </div>
+        </div>  
     </div>
+   
 </div>
 
 
@@ -269,6 +278,8 @@ document.querySelectorAll('.item-row').forEach(function(row) {
 
         // Ustawiamy dane w okienku
         
+ 
+        
         document.getElementById('popup-id').textContent = id;
         document.getElementById('popup-description_1').textContent = description_1;
         document.getElementById('popup-description_1').title = description_1;
@@ -279,13 +290,39 @@ document.querySelectorAll('.item-row').forEach(function(row) {
         document.getElementById('popup-producer').textContent = producer;
         document.getElementById('popup-supplier').textContent = supplier;
         document.getElementById('popup-manage_employee').textContent = manage_employee;
-        document.getElementById('popup-drawings_2d').textContent = drawings_2d;
-        document.getElementById('popup-drawings_3d').textContent = drawings_3d;
-        document.getElementById('popup-screen_catalog').textContent = screen_catalog;
         document.getElementById('popup-comments').textContent = ifNoneReturnEmpty(comments);
         document.getElementById('popup-change_date').textContent = change_date;
         document.getElementById('popup-entry_date').textContent = entry_date;
 
+        if (drawings_2d){
+            document.getElementById('popup-drawings_2d').href = "download/"+drawings_2d;
+            document.getElementById('popup-drawings_2d').textContent = "Pobierz";
+        }
+        else{
+            document.getElementById('popup-drawings_2d').removeAttribute("href");
+            document.getElementById('popup-drawings_2d').textContent = "Brak pliku";
+        }
+
+        if (drawings_3d){
+            document.getElementById('popup-drawings_3d').href = "download/"+drawings_3d;
+            document.getElementById('popup-drawings_3d').textContent = "Pobierz";
+        }
+        else{
+            document.getElementById('popup-drawings_3d').removeAttribute("href");
+            document.getElementById('popup-drawings_3d').textContent = "Brak pliku";
+        }
+
+        if (screen_catalog){
+            document.getElementById('popup-screen_catalog').href = "download/"+screen_catalog;
+            document.getElementById('popup-screen_catalog').textContent = "Pobierz";
+        }
+        else{
+            document.getElementById('popup-screen_catalog').removeAttribute("href");
+            document.getElementById('popup-screen_catalog').textContent = "Brak pliku";
+        }
+        
+        
+        
         // Wyświetlamy okienko w miejscu kliknięcia
         var popup = document.getElementById('data-popup');
 

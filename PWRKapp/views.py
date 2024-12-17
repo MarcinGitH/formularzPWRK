@@ -3,7 +3,10 @@ from django.views import View
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from .forms import EntryForm
+from .models import Entry
 from django.contrib import messages
+from django.core.paginator import Paginator
+from django.utils.dateparse import parse_date
 # Create your views here.
 
 
@@ -23,6 +26,9 @@ class NewEntryView(View):
         employee_type = request.session.get("employee_type")
         if employee_type is not None:
             entry.fields["type_of_employee"].initial = request.session["employee_type"]
+            if entry.fields["type_of_employee"].initial == "Technolog":
+                entry.fields["type_of_tool"].required = True
+
         context = {
             "nav_button_active": 1,
             "comp_list": test_list,
@@ -36,8 +42,6 @@ class NewEntryView(View):
             test_list.append(i)
 
         entry = EntryForm(request.POST, request.FILES)
-        # if entry.cleaned_data("type_of_employee") == "Technolog":
-        #     entry
 
         if entry.is_valid():
             entry.save()
@@ -60,10 +64,30 @@ class NewEntryView(View):
 
 class AllEntriesView(View):
     def get(self, request):
-        context = {
-            "nav_button_active": 2
-        }
-        return render(request, "PWRKapp/new_entry.html", context)
+        # Pobieranie wartości z formularza (jeśli istnieją)
+        name_filter = request.GET.get('name', '')
+        created_after = request.GET.get('created_after', '')
+
+        # Filtrujemy dane
+        items = Entry.objects.all().order_by("-pk")
+
+        if name_filter:
+            items = items.filter(description_1__icontains=name_filter)
+
+        if created_after:
+            items = items.filter(entry_date__gte=created_after)
+
+        # Pagowanie
+        paginator = Paginator(items, 30)  # 30 elementów na stronę
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+
+        return render(request, 'PWRKapp/all_entries.html', {
+            "nav_button_active": 2,
+            'page_obj': page_obj,
+            'name_filter': name_filter,
+            'created_after': created_after,
+        })
 
 
 class EntryHandlingView(View):

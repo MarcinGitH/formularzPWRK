@@ -1,5 +1,6 @@
 #new-entry-form {
     position: absolute;
+    /* display: inline-block; */
     top: 8rem;
     left: 20rem;
     width: fit-content;
@@ -8,6 +9,7 @@
     padding: 1rem;
     border-radius: 1rem;
     box-shadow: 3px 3px 3px #797878;
+
 }
 
 #new-entry-flex {
@@ -30,6 +32,7 @@
     border-radius: 10px;
     padding: 0.7rem;
     width: 100%;
+    min-height: 100px;
     margin: 7px 0;
     background-color: white;
     box-shadow: 3px 3px 3px #ccc;
@@ -55,11 +58,21 @@
     margin-bottom: 5px;
 }
 
+label:has(+ input[required])::after,
+label:has(+ select[required])::after,
+label:has(+ .radio-select)::after {
+    content: " *";
+    color: red;
+}
+
 .form-control input[type="text"],
 .form-control .combobox,
 .form-control textarea {
+    /* font-family: inherit;
+    letter-spacing: 0.08rem; */
     display: block;
     width: 100%;
+    height: 40px;
     font: inherit;
     padding: 0.25rem;
     border-radius: 6px;
@@ -67,9 +80,19 @@
     transition: ease, 100ms;
 }
 
-.form-control .text-input-description_1 {
-    text-transform: uppercase;
+.form-control textarea {
+    height: 203px;
+
 }
+
+.form-control:has(textarea) {
+    margin-bottom: 13px;
+
+}
+
+/* .form-control .text-input-description_1 {
+    text-transform: uppercase;
+} */
 
 .form-control .text-input:active,
 .form-control .text-input:focus,
@@ -82,6 +105,9 @@
     box-shadow: inset 0 1px 4px #5393b165, 0 0 5px 2px #5393b165;
 }
 
+#required-legend span {
+    color: red;
+}
 
 /* Radio buttons styling*/
 
@@ -126,6 +152,8 @@ textarea {
 }
 
 input[type="file"]::file-selector-button {
+    font-family: 'Roboto';
+    letter-spacing: 0.08rem;
     background-color: #d0e1e7;
     color: black;
     padding: 10px 20px;
@@ -209,6 +237,7 @@ input[type="file"]::file-selector-button:hover {
     box-shadow: 0 0 8px 3px #388549;
     opacity: 0.7;
     transition: ease, 500ms;
+    /* position: fixed; */
 }
 
 .success-msg.opacity-0 {

@@ -7,17 +7,23 @@
 
 * {
     box-sizing: border-box;
+    font-family: 'Roboto', 'Open Sans', 'Lato', sans-serif;
+    letter-spacing: 0.08rem;
 }
 
 html {
-    font-family: 'Open Sans', 'Lato', sans-serif;
+
     user-select: none;
 }
 
 body {
+
     margin: 0;
     background: linear-gradient(150deg, #f3f3f3, #7e7e7e);
+    overflow-x: hidden;
+
 }
+
 
 #top-bar {
     display: flex;

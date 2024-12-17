@@ -66,7 +66,7 @@
         </div>
 
         
-        <p>* - pole wymagane</p>
+        <p id="required-legend"><span>*</span> - pole wymagane</p>
 
         {% if messages %}
             <p class="success-msg">{% for msg in messages %}{{msg}}{% endfor %}</p>
@@ -126,11 +126,11 @@
         if (successBox){
                 setTimeout(function() {
                     successBox.classList.add("opacity-0");
-                }, 2000);
+                }, 1500);
 
                 setTimeout(function() {
                     successBox.classList.add("hidden");
-                }, 2500);
+                }, 2000);
 
             
             }

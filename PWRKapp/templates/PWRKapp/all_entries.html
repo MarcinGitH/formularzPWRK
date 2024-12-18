@@ -1,11 +1,13 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}PWRK - Nowe zgłoszenie{% endblock title %}
+{% block title %}PWRK - Wszystkie zgłoszenia{% endblock title %}
 {% block css_files %}
 <link rel="stylesheet" href="{% static "PWRKapp/all_entries.css" %}">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-   
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 {% endblock css_files %}
 
 {% block content %}
@@ -68,7 +70,7 @@
                             <div class="copy-button-div"><button class="copy-btn" onclick="copyToClipboard('{{ item.description_1 }}', {{ item.pk }}, event)" title="Kopiuj">
                                 <i class="fa-solid fa-copy"></i>
                             </button></div>
-                            <span class="copy-notification" id="notification-{{ item.pk }}">Skopiowano</span>
+                            
                         </td>
                         <td>{{ item.entry_date|date:"Y-m-d H:i:s" }}</td>
                         <td>{{ item.entry_employee|default_if_none:"" }}</td>
@@ -86,7 +88,7 @@
     </div>
 
 
-    
+    <span class="copy-notification" id="notification-copyied">Skopiowano</span>
     <!-- Nawigacja do stron -->
     <div class="pagination">
         <span class="step-links">
@@ -154,19 +156,19 @@
             <tr>
                 <td>Rysunek 2D:</td>
                 <td >
-                    <a id="popup-drawings_2d" download >Brak pliku</a>
+                    <a id="popup-drawings_2d" download>Brak pliku</a>
                 </td>
             </tr>
             <tr>
                 <td>Rysunek 3D:</td>
                 <td >
-                    <a id="popup-drawings_3d" download >Brak pliku</a>
+                    <a id="popup-drawings_3d" download>Brak pliku</a>
                 </td>
             </tr>
             <tr>
                 <td>Screen z katalogu:</td>
                 <td>
-                    <a id="popup-screen_catalog" download >Brak pliku</a>
+                    <a id="popup-screen_catalog" download>Brak pliku</a>
                 </td>
             </tr>
             <tr>
@@ -228,7 +230,7 @@ function copyToClipboard(text, itemId, event) {
     document.body.removeChild(tempInput);
 
     // Wyświetlenie powiadomienia "Skopiowano" w formie popupu
-    var notification = document.getElementById('notification-'+itemId);
+    var notification = document.getElementById('notification-copyied');
 
     // Obliczenie pozycji popupu kopiowania względem kliknięcia
     var posX = event.clientX;  // Używamy clientX i dodajemy przewinięcie
@@ -295,7 +297,7 @@ document.querySelectorAll('.item-row').forEach(function(row) {
         document.getElementById('popup-entry_date').textContent = entry_date;
 
         if (drawings_2d){
-            document.getElementById('popup-drawings_2d').href = "download/"+drawings_2d;
+            document.getElementById('popup-drawings_2d').href = "download/drawings_2d/"+id;
             document.getElementById('popup-drawings_2d').textContent = "Pobierz";
         }
         else{
@@ -304,7 +306,7 @@ document.querySelectorAll('.item-row').forEach(function(row) {
         }
 
         if (drawings_3d){
-            document.getElementById('popup-drawings_3d').href = "download/"+drawings_3d;
+            document.getElementById('popup-drawings_3d').href = "download/drawings_3d/"+id;
             document.getElementById('popup-drawings_3d').textContent = "Pobierz";
         }
         else{
@@ -313,7 +315,7 @@ document.querySelectorAll('.item-row').forEach(function(row) {
         }
 
         if (screen_catalog){
-            document.getElementById('popup-screen_catalog').href = "download/"+screen_catalog;
+            document.getElementById('popup-screen_catalog').href = "download/screen_catalog/"+id;
             document.getElementById('popup-screen_catalog').textContent = "Pobierz";
         }
         else{

@@ -32,7 +32,7 @@ class EntryForm(forms.ModelForm):
             'type_of_tool': forms.RadioSelect(choices=type_of_tool_choices, attrs={'class': 'radio-select type-of-tool'}),
             'producer': forms.Select(attrs={'class': 'combobox producer'}),
             'supplier': forms.Select(attrs={'class': 'combobox supplier'}),
-            "drawings_2d": forms.FileInput(attrs={'accept': '.zip,application/pdf'}),
+            "drawings_2d": forms.FileInput(),
             "drawings_3d": forms.FileInput(),
             "screen_catalog": forms.FileInput(),
         }

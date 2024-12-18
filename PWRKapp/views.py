@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views import View
-from django.http import HttpResponseRedirect, FileResponse, HttpResponseNotFound
+from django.http import HttpResponseRedirect, FileResponse, Http404, HttpResponse
 from django.urls import reverse
 from .forms import EntryForm
 from .models import Entry
@@ -10,6 +10,7 @@ from django.utils.dateparse import parse_date
 import os
 from django.conf import settings
 from django.db.models import Q
+import mimetypes
 # Create your views here.
 
 
@@ -101,22 +102,48 @@ class EntryHandlingView(View):
         return render(request, "PWRKapp/new_entry.html", context)
 
 
-def download(request, catalog, file_name):
-    db_file_path = catalog + "/" + file_name
-    file = os.path.join(settings.BASE_DIR, "uploads/" + db_file_path)
-    if os.path.isfile(file):
-        fileOpened = open(file, "rb")
-        return FileResponse(fileOpened)
+def download(request, file_type, id):
+    try:
+        entry_record = Entry.objects.get(pk=id)
+    except Entry.DoesNotExist:
+        raise Http404("Plik nie istnieje.")
+
+    # Sprawdź, które pole pliku zostało wybrane
+    if file_type == 'drawings_2d':
+        file = entry_record.drawings_2d
+    elif file_type == 'drawings_3d':
+        file = entry_record.drawings_3d
+    elif file_type == 'screen_catalog':
+        file = entry_record.screen_catalog
     else:
-        file_records = Entry.objects.filter(Q(drawings_2d=db_file_path) | Q(
-            drawings_3d=db_file_path) | Q(screen_catalog=db_file_path))
-        for file_rec in file_records:
-            if catalog == "drawings_2d":
-                file_rec.drawings_2d = None
-                file_rec.save()
-            elif catalog == "drawings_3d":
-                file_rec.drawings_3d = None
-                file_rec.save()
-            elif catalog == "screen_catalog":
-                file_rec.screen_catalog = None
-                file_rec.save()
+        raise Http404("Nieznany typ pliku.")
+
+    # Sprawdzamy, czy plik jest przypisany
+    if file:
+        file_path = os.path.join(settings.MEDIA_ROOT, file.name)
+        if os.path.exists(file_path):
+            with open(file_path, 'rb') as f:
+                mime_type, _ = mimetypes.guess_type(file.name)
+                if not mime_type:
+                    # Domyślny typ, jeśli nie możemy ustalić typu
+                    mime_type = 'application/octet-stream'
+                response = HttpResponse(f.read(), content_type=mime_type)
+                response['Content-Disposition'] = f'attachment; filename="{
+                    os.path.basename(file.name)}"'
+                # Ustawienie dodatkowych nagłówków, aby wymusić pobieranie
+                response['Content-Transfer-Encoding'] = 'binary'
+                response['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+                response['Pragma'] = 'no-cache'
+                response['Expires'] = '0'
+                return response
+        else:
+            if file_type == 'drawings_2d':
+                entry_record.drawings_2d = None
+            elif file_type == 'drawings_3d':
+                entry_record.drawings_3d = None
+            elif file_type == 'screen_catalog':
+                entry_record.screen_catalog = None
+            entry_record.save()
+            return HttpResponse("Plik nie istnieje w systemie.", status=404)
+    else:
+        return HttpResponse("Brak wybranego pliku.", status=404)

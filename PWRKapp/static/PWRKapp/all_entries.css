@@ -319,7 +319,7 @@ tr:nth-of-type(even) {
 
 
 .copy-notification {
-    display: block;
+    display: none;
     /* position: sticky; */
     background-color: #4f574a;
     color: white;

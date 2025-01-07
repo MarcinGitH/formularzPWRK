@@ -24,7 +24,7 @@ class ProducerSupplier(models.Model):
 
 
 class Entry(models.Model):
-    PWRK = models.CharField(max_length=15, blank=True)
+    PWRK = models.CharField(max_length=10, blank=True)
     description_1 = models.CharField(max_length=100, null=True)
     status = models.CharField(
         max_length=30, null=False, default="NOWY", blank=True)

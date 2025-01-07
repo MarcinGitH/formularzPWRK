@@ -86,11 +86,14 @@ class AllEntriesView(View):
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
 
+        entry = EntryForm()
         return render(request, 'PWRKapp/all_entries.html', {
             "nav_button_active": 2,
             'page_obj': page_obj,
             'name_filter': name_filter,
             'created_after': created_after,
+            'admin_user': True,
+            "entry_form": entry
         })
 
 

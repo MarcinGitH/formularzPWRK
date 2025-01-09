@@ -1,293 +1,242 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% load static %}
 
-{% block title %}PWRK - Wszystkie zgłoszenia{% endblock title %}
+{% block title %}
+  PWRK - Wszystkie zgłoszenia
+{% endblock %}
 {% block css_files %}
+  <link rel="stylesheet" href="{% static 'PWRKapp/all_entries.css' %}" />
 
-<link rel="stylesheet" href="{% static "PWRKapp/all_entries.css" %}">
-
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
-{% endblock css_files %}
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet" />
+{% endblock %}
 
 {% block content %}
-<section class="content">
+  <section class="content">
     <!-- Formularz filtrujący -->
     <div class="filter-form">
-        <form method="GET">
-            <input type="text" name="name" placeholder="Filtruj po nazwie" value="{{ name_filter }}">
-            <input type="date" name="created_after" value="{{ created_after }}">
-            <button type="submit" class="btn">Filtruj</button>
-        </form>
+      <form method="GET">
+        <input type="text" name="name" placeholder="Filtruj po nazwie" value="{{ name_filter }}" />
+        <input type="date" name="created_after" value="{{ created_after }}" />
+        <button type="submit" class="btn">Filtruj</button>
+      </form>
     </div>
 
     <!-- Tabela z nagłówkami -->
     <div class="item-list-container">
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th style="width: 80px;">ID</th>
-                    <th style="width: 280px;">Status</th>
-                    <th style="width: 190px;">Numer PWRK</th>
-                    <th>Opis komponentu 1</th>
-                    <th style="width: 200px;">Data zgłoszenia</th>
-                    <th style="width: 200px;">Zgłaszający</th>
-                    {% comment %} <th>Obsługujący</th> 
-                    <th>Data zmiany statusu</th>  {% endcomment %}
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in page_obj %}
-                    <tr class="item-row {% if item.status|slice:"4" == "ZAKO" %}entry-finished{% endif %}" id="item-{{ item.pk }}" 
-                    data-PWRK="{{ item.PWRK }}"
-                    data-id="{{ item.pk }}"
-                    data-description_1="{{ item.description_1 }}"
-                    data-status="{{ item.status }}"
-                    data-type_of_employee="{{ item.type_of_employee }}"
-                    data-type_of_tool="{{ item.type_of_tool }}"
-                    data-reason="{{ item.reason }}"
-                    data-producer="{{ item.producer }}"
-                    data-supplier="{{ item.supplier }}"
-                    data-manage_employee="{{ item.manage_employee|default_if_none:"" }}"
-                    data-drawings_2d="{{ item.drawings_2d }}"
-                    data-drawings_3d="{{ item.drawings_3d }}"
-                    data-screen_catalog="{{ item.screen_catalog }}"
-                    data-comments="{{ item.comments }}"
-                    data-entry_date="{{ item.entry_date|date:"Y-m-d H:i:s" }}"
-                    data-change_date="{{ item.change_date|date:"Y-m-d H:i:s" }}">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width: 80px;">ID</th>
+            <th style="width: 280px;">Status</th>
+            <th style="width: 190px;">Numer PWRK</th>
+            <th>Opis komponentu 1</th>
+            <th style="width: 200px;">Data zgłoszenia</th>
+            <th style="width: 200px;">Zgłaszający</th>
+            {% comment %} <th>Obsługujący</th>
+            <th>Data zmiany statusu</th> {% endcomment %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in page_obj %}
+            <tr class="item-row {% if item.status|slice:'4' == 'ZAKO' %}entry-finished{% endif %}" id="item-{{ item.pk }}" data-PWRK="{{ item.PWRK }}" data-id="{{ item.pk }}" data-description_1="{{ item.description_1 }}" data-status="{{ item.status }}" data-type_of_employee="{{ item.type_of_employee }}" data-type_of_tool="{{ item.type_of_tool }}" data-reason="{{ item.reason }}" data-producer="{{ item.producer }}" data-supplier="{{ item.supplier }}" data-manage_employee="{{ item.manage_employee|default_if_none:'' }}" data-drawings_2d="{{ item.drawings_2d }}" data-drawings_3d="{{ item.drawings_3d }}" data-screen_catalog="{{ item.screen_catalog }}" data-comments="{{ item.comments }}" data-entry_date="{{ item.entry_date|date:'Y-m-d H:i:s' }}" data-change_date="{{ item.change_date|date:'Y-m-d H:i:s' }}">
+              <td>{{ item.pk }}</td>
+              <td>{{ item.status }}</td>
+              <td>
+                {% if item.PWRK %}
+                  {{ item.PWRK }}
+                  <button class="copy-btn" onclick="copyToClipboard('{{ item.PWRK }}', {{ item.pk }}, event)" title="Kopiuj"><i class="fa-solid fa-copy"></i></button>
+                  <span class="copy-notification" id="notification-{{ item.pk }}">Skopiowano</span>
+                {% endif %}
+              </td>
+              <td title="{{ item.description_1 }}">
+                {{ item.description_1 }}
+                <div class="copy-button-div">
+                  <button class="copy-btn" onclick="copyToClipboard('{{ item.description_1 }}', {{ item.pk }}, event)" title="Kopiuj"><i class="fa-solid fa-copy"></i></button>
+                </div>
+              </td>
+              <td>{{ item.entry_date|date:'Y-m-d H:i:s' }}</td>
+              <td>{{ item.entry_employee|default_if_none:'' }}</td>
+              {% comment %} <td>{{ item.manage_employee|default_if_none:'' }}</td>
+              <td>{{ item.change_date|date:'Y-m-d' }}</td> {% endcomment %}
 
-                        <td>{{ item.pk }}</td>
-                        <td>{{ item.status }}</td>
-                        <td>{% if item.PWRK %}
-                            {{item.PWRK}}  
-                            <button class="copy-btn" onclick="copyToClipboard('{{ item.PWRK }}', {{ item.pk }}, event)" title="Kopiuj">
-                                <i class="fa-solid fa-copy"></i>
-                            </button>
-                            <span class="copy-notification" id="notification-{{ item.pk }}">Skopiowano</span>
-                            {% endif %}
-                        </td>
-                        <td title="{{ item.description_1 }}">
-                            {{ item.description_1 }}
-                            <div class="copy-button-div"><button class="copy-btn" onclick="copyToClipboard('{{ item.description_1 }}', {{ item.pk }}, event)" title="Kopiuj">
-                                <i class="fa-solid fa-copy"></i>
-                            </button></div>
-                            
-                        </td>
-                        <td>{{ item.entry_date|date:"Y-m-d H:i:s" }}</td>
-                        <td>{{ item.entry_employee|default_if_none:"" }}</td>
-                        {% comment %} <td>{{ item.manage_employee|default_if_none:"" }}</td>
-                        <td>{{ item.change_date|date:"Y-m-d" }}</td> {% endcomment %}
-
-                        {% comment %} <td>
-                            <button class="btn" onclick="alert('Edytujesz: {{ item.name }}')">Edytuj</button>
-                            <button class="btn" onclick="alert('Usuwasz: {{ item.name }}')">Usuń</button>
-                        </td>  {% endcomment %}
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+              {% comment %} <td>
+                <button class="btn" onclick="alert('Edytujesz: {{ item.name }}')">Edytuj</button>
+                <button class="btn" onclick="alert('Usuwasz: {{ item.name }}')">Usuń</button>
+              </td> {% endcomment %}
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
-
 
     <span class="copy-notification" id="notification-copyied">Skopiowano</span>
     <!-- Nawigacja do stron -->
     <div class="pagination">
-        <span class="step-links">
-            {% if page_obj.has_previous %}
-                <a href="?page=1&name={{ name_filter }}&created_after={{ created_after }}" class="page-link first-page-link">pierwsza</a>
-                <a href="?page={{ page_obj.previous_page_number }}&name={{ name_filter }}&created_after={{ created_after }}" class="page-link previous-page-link">poprzednia</a>
-            {% endif %}
+      <span class="step-links">
+        {% if page_obj.has_previous %}
+          <a href="?page=1&name={{ name_filter }}&created_after={{ created_after }}" class="page-link first-page-link">pierwsza</a>
+          <a href="?page={{ page_obj.previous_page_number }}&name={{ name_filter }}&created_after={{ created_after }}" class="page-link previous-page-link">poprzednia</a>
+        {% endif %}
 
-            <span class="current">
-                Strona {{ page_obj.number }} z {{ page_obj.paginator.num_pages }}.
-            </span>
+        <span class="current">Strona {{ page_obj.number }} z {{ page_obj.paginator.num_pages }}.</span>
 
-            {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}&name={{ name_filter }}&created_after={{ created_after }}" class="page-link next-page-link">następna</a>
-                <a href="?page={{ page_obj.paginator.num_pages }}&name={{ name_filter }}&created_after={{ created_after }}" class="page-link last-page-link">ostatnia</a>
-            {% endif %}
-        </span>
+        {% if page_obj.has_next %}
+          <a href="?page={{ page_obj.next_page_number }}&name={{ name_filter }}&created_after={{ created_after }}" class="page-link next-page-link">następna</a>
+          <a href="?page={{ page_obj.paginator.num_pages }}&name={{ name_filter }}&created_after={{ created_after }}" class="page-link last-page-link">ostatnia</a>
+        {% endif %}
+      </span>
     </div>
 
     {% if not admin_user %}
-    <!-- Okienko z danymi dla pracownika bez uparwnien admina -->
-<div id="data-popup" class="data-popup">
-    
-    <div id="popup-header"><span>Szczegóły zgłoszenia</span>
-        <button class="popup-close" id="popup-close"><i class="fa-solid fa-xmark"></i></button>
-    </div>
-    <div class="popup-content">
-        <table class="popup-table">
+      <!-- Okienko z danymi dla pracownika bez uparwnien admina -->
+      <div id="data-popup" class="data-popup">
+        <div id="popup-header">
+          <span>Szczegóły zgłoszenia</span>
+          <button class="popup-close" id="popup-close"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="popup-content">
+          <table class="popup-table">
             <tr>
-                <td>ID:</td>
-                <td id="popup-id"></td>
-            </tr>
-
-            
-            <tr>
-                <td>Opis komponentu 1:</td>
-                <td id="popup-description_1"></td>
+              <td>ID:</td>
+              <td id="popup-id"></td>
             </tr>
 
             <tr>
-                <td>Status:</td>
-                <td id="popup-status"></td>
+              <td>Opis komponentu 1:</td>
+              <td id="popup-description_1"></td>
             </tr>
 
             <tr>
-                <td>Osoba zgłaszająca:</td>
-                <td id="popup-type_of_employee"></td>
+              <td>Status:</td>
+              <td id="popup-status"></td>
             </tr>
 
             <tr>
-                <td>Rodzaj narzędzia:</td>
-                <td id="popup-type_of_tool"></td>
+              <td>Osoba zgłaszająca:</td>
+              <td id="popup-type_of_employee"></td>
             </tr>
-            <tr>
-                <td>Powód zgłoszenia:</td>
-                <td id="popup-reason"></td>
-            </tr>
-            <tr>
-                <td>Producent:</td>
-                <td id="popup-producer"></td>
-            </tr>
-            <tr>
-                <td>Dostawca:</td>
-                <td id="popup-supplier"></td>
-            </tr>
-            <tr>
-                <td>Rysunek 2D:</td>
-                <td >
-                    <a id="popup-drawings_2d" download>Brak pliku</a>
-                </td>
-            </tr>
-            <tr>
-                <td>Rysunek 3D:</td>
-                <td >
-                    <a id="popup-drawings_3d" download>Brak pliku</a>
-                </td>
-            </tr>
-            <tr>
-                <td>Screen z katalogu:</td>
-                <td>
-                    <a id="popup-screen_catalog" download>Brak pliku</a>
-                </td>
-            </tr>
-            <tr>
-                <td>Data zgłoszenia:</td>
-                <td id="popup-entry_date"></td>
-            </tr>
-            <tr>
-                <td>Data zmiany statusu:</td>
-                <td id="popup-change_date"></td>
-            </tr>
-            <tr>
-                <td>Obsługujący zgłoszenie:</td>
-                <td id="popup-manage_employee"></td>
-            </tr>
-            
-        </table>
 
-        <div class="popup-comments-container">
+            <tr>
+              <td>Rodzaj narzędzia:</td>
+              <td id="popup-type_of_tool"></td>
+            </tr>
+            <tr>
+              <td>Powód zgłoszenia:</td>
+              <td id="popup-reason"></td>
+            </tr>
+            <tr>
+              <td>Producent:</td>
+              <td id="popup-producer"></td>
+            </tr>
+            <tr>
+              <td>Dostawca:</td>
+              <td id="popup-supplier"></td>
+            </tr>
+            <tr>
+              <td>Rysunek 2D:</td>
+              <td>
+                <a id="popup-drawings_2d" download>Brak pliku</a>
+              </td>
+            </tr>
+            <tr>
+              <td>Rysunek 3D:</td>
+              <td>
+                <a id="popup-drawings_3d" download>Brak pliku</a>
+              </td>
+            </tr>
+            <tr>
+              <td>Screen z katalogu:</td>
+              <td>
+                <a id="popup-screen_catalog" download>Brak pliku</a>
+              </td>
+            </tr>
+            <tr>
+              <td>Data zgłoszenia:</td>
+              <td id="popup-entry_date"></td>
+            </tr>
+            <tr>
+              <td>Data zmiany statusu:</td>
+              <td id="popup-change_date"></td>
+            </tr>
+            <tr>
+              <td>Obsługujący zgłoszenie:</td>
+              <td id="popup-manage_employee"></td>
+            </tr>
+          </table>
+
+          <div class="popup-comments-container">
             <p class="popup-comments-label">Komentarz:</p>
             <div id="popup-comments-div">
-                <p id="popup-comments"></p>
+              <p id="popup-comments"></p>
             </div>
-        </div>  
-    </div>
-   
-</div>
+          </div>
+        </div>
+      </div>
+    {% endif %}
 
-{% else %}
-<!--Okienko do obslugo zgloszen -->
-<div id="data-popup" class="data-popup">
-    
-    <div id="popup-header"><span>Edycja zgłoszenia</span>
-        <button class="popup-close" id="popup-close"><i class="fa-solid fa-xmark"></i></button>
-    </div>
-    <div class="popup-content">
-        <form action="{% url "new-entry" %}" method="POST" enctype="multipart/form-data" autocomplete="off">
+    {% if admin_user %}
+      <!-- Okienko do obslugo zgloszen -->
+      <div id="data-popup" class="data-popup data-popup-edit">
+        <div id="popup-header">
+          <span id="popup-header-span">Edycja zgłoszenia ID: <span id="id-value"></span></span>
+        </div>
+        <div class="popup-content">
+          <form action="{% url 'new-entry' %}" method="POST" enctype="multipart/form-data" autocomplete="off">
             {% csrf_token %}
             <div id="new-entry-flex">
-                <div class="new-entry-column" id="new-entry-column-1">
-                    <div class="form-control"> 
-                        <p>ID: <span id="id-value"></span></p>
-                    </div>
-                    <div class="form-control"> 
-                        {{entry_form.PWRK.label_tag}}
-                        {{entry_form.PWRK}}
-                    </div>
-                    <div class="form-control"> 
-                        {{entry_form.description_1.label_tag}}
-                        {{entry_form.description_1}}
-                    </div>
-                    <div class="form-control-inline">
-                        <div class="form-control {% if entry_form.type_of_employee.value == "Technolog"%}techno{% endif %}" id="type-of-employee-div"> 
-                            {{entry_form.type_of_employee.label_tag}}
-                            {{entry_form.type_of_employee}}
-                        </div>
-                        <div class="form-control {% if entry_form.type_of_employee.value == "Technolog"%}techno{% endif %}" id="type-of-tool-div"> 
-                            {{entry_form.type_of_tool.label_tag}}
-                            {{entry_form.type_of_tool}}
-                        </div>
-                    </div>
-                    <div class="form-control"> 
-                        {{entry_form.reason.label_tag}}
-                        {{entry_form.reason}}
-                    </div>
-                    <div class="form-control"> 
-                        {{entry_form.producer.label_tag}}
-                        {{entry_form.producer}}
-                    </div>
-                    <div class="form-control"> 
-                        {{entry_form.supplier.label_tag}}
-                        {{entry_form.supplier}}
-                    </div>
+              <div class="new-entry-column" id="new-entry-column-1">
+                <div class="form-control">{{ entry_form.PWRK.label_tag }}
+                  {{ entry_form.PWRK }}</div>
+                <div class="form-control">{{ entry_form.description_1.label_tag }}
+                  {{ entry_form.description_1 }}</div>
+                <div class="form-control-inline">
+                  <div class="form-control {% if entry_form.type_of_employee.value == 'Technolog' %}techno{% endif %}" id="type-of-employee-div">{{ entry_form.type_of_employee.label_tag }}
+                    {{ entry_form.type_of_employee }}</div>
+                  <div class="form-control {% if entry_form.type_of_employee.value == 'Technolog' %}techno{% endif %}" id="type-of-tool-div">{{ entry_form.type_of_tool.label_tag }}
+                    {{ entry_form.type_of_tool }}</div>
                 </div>
+                <div class="form-control">{{ entry_form.reason.label_tag }}
+                  {{ entry_form.reason }}</div>
+                <div class="form-control">{{ entry_form.producer.label_tag }}
+                  {{ entry_form.producer }}</div>
+                <div class="form-control">{{ entry_form.supplier.label_tag }}
+                  {{ entry_form.supplier }}</div>
+              </div>
 
-                <div class="new-entry-column{% if entry_form.type_of_employee.value == "Technolog"%} techno{% endif %}" id="new-entry-column-2">
-                    <div class="form-control"> 
-                        {{entry_form.comments.label_tag}}
-                        {{entry_form.comments}}
-                    </div>
-                    <div class="form-control"> 
-                        <p>Rysunek 2D</p>
-                        <a id="popup-drawings_2d" download>Brak pliku</a>
-                    </div>
-                    <div class="form-control"> 
-                        <p>Rysunek 3D</p>
-                        <a id="popup-drawings_3d" download>Brak pliku</a>
-                    </div>
-                    <div class="form-control"> 
-                        <p>Screen z katalogu:</p>
-                        <a id="popup-screen_catalog" download>Brak pliku</a>
-                    </div>
+              <div class="new-entry-column{% if entry_form.type_of_employee.value == 'Technolog' %} techno{% endif %}" id="new-entry-column-2">
+                <div class="form-control">{{ entry_form.comments.label_tag }}
+                  {{ entry_form.comments }}</div>
+                <div class="form-control">
+                  <p>Rysunek 2D</p>
+                  <a id="popup-drawings_2d" download>Brak pliku</a>
                 </div>
+                <div class="form-control">
+                  <p>Rysunek 3D</p>
+                  <a id="popup-drawings_3d" download>Brak pliku</a>
+                </div>
+                <div class="form-control">
+                  <p>Screen z katalogu:</p>
+                  <a id="popup-screen_catalog" download>Brak pliku</a>
+                </div>
+              </div>
             </div>
-            
-            <button id="submit-button">Zapisz</button>
-        </form>
-    </div>
-   
-</div>
-{% endif %}
-</section>
 
-
-
-
-
-
-
-{% endblock content %}
-
-
-
+            <div class="buttons-container">
+              <button class="button" id="submit-button">Zapisz</button>
+              <button type="button" class="button" id="cancel-button">Anuluj</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    {% endif %}
+  </section>
+{% endblock %}
 
 {% block script %}
-<script>
+  <script>
     
 function ifNoneReturnEmpty(str){
     if (str != "None"){
@@ -497,6 +446,10 @@ document.querySelectorAll('.item-row').forEach(function(row) {
         popup.style.top = 5 + "px";
         popup.style.left = (window.innerWidth - popupWidth)/4 + "px";
         
+        
+        document.querySelector('.data-popup-edit').scrollIntoView({
+            behavior: 'smooth'
+        });
         // Zatrzymujemy propagację, aby zapobiec wywołaniu innych zdarzeń kliknięcia
         event.stopPropagation();
     });
@@ -506,8 +459,11 @@ document.querySelectorAll('.item-row').forEach(function(row) {
 
 
 // Zamknięcie popupu ze szczegółami
-document.getElementById('popup-close').addEventListener('click', function() {
+document.getElementById('cancel-button').addEventListener('click', function() {
     document.getElementById('data-popup').style.display = 'none';
+    document.querySelector('#top-bar').scrollIntoView({
+        behavior: 'smooth'
+    });
 });
 
 
@@ -558,6 +514,4 @@ function setComboBoxValue(selectId, value) {
     }
 }
 </script>
-{% endblock script %}
-
-
+{% endblock %}

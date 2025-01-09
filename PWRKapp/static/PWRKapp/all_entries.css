@@ -1,5 +1,5 @@
 .content {
-    position: absolute;
+    /* position: absolute; */
     top: 4rem;
     left: 17rem;
     /* width: 80%; */
@@ -8,6 +8,7 @@
     height: fit-content;
     max-height: fit-content;
     margin: 1rem 5rem;
+    margin-left: 17rem;
     background-color: #f1f0f0;
     padding: 1rem;
     border-radius: 1rem;
@@ -135,7 +136,11 @@ tr:nth-of-type(even) {
 }
 
 .pagination {
-    float: right;
+    /* float: right; */
+    position: relative;
+    text-align: right;
+    /* width: 100px; */
+    right: 0;
     margin-right: 20px;
 }
 
@@ -154,8 +159,10 @@ tr:nth-of-type(even) {
     /* height: fit-content; */
     max-width: 1000px;
     display: none;
+    top: 100px !important;
+    left: 30rem !important;
     /* max-height: 100%; */
-    height: 100%;
+    /* height: 100%; */
     /* top: 0; */
     /* overflow-y: auto; */
 
@@ -163,6 +170,29 @@ tr:nth-of-type(even) {
     z-index: 1000;
     /* max-width: 500px; */
 }
+
+
+
+.data-popup-edit {
+    position: relative;
+    /* max-height: 100%; */
+    /* margin-left: 30rem; */
+    left: 0 !important;
+    height: 100%;
+    width: 100%;
+    max-width: none;
+    top: 10px !important;
+    box-shadow: 1px 1px 4px #1b1b1b;
+
+    /* padding: 20px; */
+    /* top: 0; */
+    /* overflow-y: auto; */
+
+    /* Ukryte na początku */
+    z-index: 1000;
+    /* max-width: 500px; */
+}
+
 
 #popup-header {
     /* display: inline-block; */
@@ -178,7 +208,11 @@ tr:nth-of-type(even) {
     border-radius: 20px 20px 0 0;
 }
 
-#popup-header span {
+.data-popup-edit #popup-header {
+    background-color: #bebebe;
+}
+
+#popup-header-span {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -191,6 +225,10 @@ tr:nth-of-type(even) {
     margin-top: 10px;
     overflow-y: scroll;
     max-height: 90%;
+}
+
+.data-popup-edit .popup-content {
+    overflow-y: hidden;
 }
 
 .data-popup .popup-close {
@@ -218,6 +256,7 @@ tr:nth-of-type(even) {
     display: flex;
     flex-direction: column;
     padding: 30px 40px;
+    width: 100%;
 }
 
 .popup-table {
@@ -354,9 +393,7 @@ tr:nth-of-type(even) {
     float: right;
 }
 
-.pagination {
-    padding: 20px;
-}
+
 
 .page-link {
     display: inline-block;
@@ -548,10 +585,10 @@ input[type="file"]::file-selector-button:hover {
     background-color: #98c9db;
 }
 
-#submit-button {
+.button {
     background-color: #d0e1e7;
-    display: block;
-    margin: 20px auto;
+    /* display: block; */
+    margin: 20px 10px;
     padding: 12px 30px;
     border: none;
     border-radius: 20px;
@@ -569,11 +606,11 @@ input[type="file"] {
     width: 350px
 }
 
-#submit-button:hover {
+.button:hover {
     background-color: #98c9db;
     scale: 1.05;
 }
 
-#id-value {
-    color: #666666;
+.buttons-container {
+    text-align: center;
 }

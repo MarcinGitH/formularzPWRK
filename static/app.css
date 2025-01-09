@@ -11,17 +11,18 @@
     letter-spacing: 0.08rem;
 }
 
-html {
-
+/* html {
+    height: 100vh;
     user-select: none;
-}
+} */
 
-body {
-
+body,
+html {
+    height: 100%;
     margin: 0;
     background: linear-gradient(150deg, #f3f3f3, #7e7e7e);
     overflow-x: hidden;
-
+    position: relative;
 }
 
 
@@ -44,13 +45,14 @@ body {
 
 .main-nav {
     width: 15rem;
-    height: 100vh;
+    height: 100%;
     /* position: static; */
     /* left: 0; */
     float: left;
     background: linear-gradient(to bottom, #255a97, #7fa7d4);
     padding: 0;
     box-shadow: 5px 5px 5px #306ac070;
+
 }
 
 .main-nav ul {
@@ -95,4 +97,9 @@ body {
     pointer-events: none;
     cursor: default;
     box-shadow: 2px 0 5px #6d7b91bd;
+}
+
+.main-nav {
+    position: sticky;
+    top: 0px;
 }

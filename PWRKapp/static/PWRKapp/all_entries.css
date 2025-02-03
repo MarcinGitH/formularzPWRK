@@ -614,3 +614,7 @@ input[type="file"] {
 .buttons-container {
     text-align: center;
 }
+
+.errorlist li {
+    color: red;
+}

@@ -184,8 +184,11 @@
           <span id="popup-header-span">Edycja zgłoszenia ID: <span id="id-value"></span></span>
         </div>
         <div class="popup-content">
-          <form action="{% url 'new-entry' %}" method="POST" enctype="multipart/form-data" autocomplete="off">
+          <form action="{% url 'all-entries' %}" method="POST" enctype="multipart/form-data" autocomplete="off">
             {% csrf_token %}
+            <input type="hidden" id="record-id" name="record-id" />
+            <input type="hidden" name="page" value="{{ page_number }}" />
+
             <div id="new-entry-flex">
               <div class="new-entry-column" id="new-entry-column-1">
                 <div class="form-control">{{ entry_form.PWRK.label_tag }}
@@ -221,6 +224,8 @@
                   <p>Screen z katalogu:</p>
                   <a id="popup-screen_catalog" download>Brak pliku</a>
                 </div>
+                <div class="form-control">{{ entry_form.status.label_tag }}
+                  {{ entry_form.status }}</div>
               </div>
             </div>
 
@@ -232,6 +237,11 @@
         </div>
       </div>
     {% endif %}
+    <div>
+      {% for field in entry_form %}
+        <p>{{ field.errors }}</p>
+      {% endfor %}
+    </div>
   </section>
 {% endblock %}
 
@@ -309,6 +319,9 @@ document.querySelectorAll('.item-row').forEach(function(row) {
         var change_date = this.getAttribute('data-change_date');
         var entry_date = this.getAttribute('data-entry_date');
 
+        if(comments == "None"){
+          comments = "";
+        }
         // Ustawiamy dane w okienku
         
         console.log(PWRK);
@@ -354,6 +367,7 @@ document.querySelectorAll('.item-row').forEach(function(row) {
                 document.getElementById('popup-screen_catalog').textContent = "Brak pliku";
             }
         {% else %}
+            document.getElementById('record-id').value = id;
             document.getElementById('text-input-description_1').value = description_1;
             //**********
             if(type_of_employee == "Technolog"){
@@ -416,6 +430,8 @@ document.querySelectorAll('.item-row').forEach(function(row) {
             document.getElementById('id-value').innerText = id;
             //**********
             document.getElementById('text-input-PWRK').value = PWRK;
+
+            document.getElementById('status').value = status;
 
         {% endif %}
         

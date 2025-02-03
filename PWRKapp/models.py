@@ -52,8 +52,8 @@ class Entry(models.Model):
         blank=True, null=True)
 
     def save(self, *args, **kwargs):
-
-        if self.type_of_employee != "Technolog":
+        self.form_type = kwargs.pop('form_type', None)
+        if self.type_of_employee != "Technolog" and self.form_type == "new_entry_form":
             self.type_of_tool = None
             self.drawings_2d = None
             self.drawings_3d = None

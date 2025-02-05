@@ -2,6 +2,8 @@ from django import forms
 from .models import Entry, ProducerSupplier
 import os
 from django.db.models.fields import BLANK_CHOICE_DASH
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 
 reason_choices = [
     ('Nowe narzędzie - nowe uruchomienie', 'Nowe narzędzie - nowe uruchomienie'),
@@ -92,3 +94,11 @@ class EntryForm(forms.ModelForm):
             self.add_error("PWRK", msg)
 
         return cleaned_data
+
+
+class CreateUserForm(UserCreationForm):
+
+    class Meta:
+
+        model = User
+        fields = ["username", "email", "password1", "password2"]

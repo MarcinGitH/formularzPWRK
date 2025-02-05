@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views import View
 from django.http import HttpResponseRedirect, FileResponse, Http404, HttpResponse
 from django.urls import reverse
-from .forms import EntryForm
+from .forms import EntryForm, CreateUserForm
 from .models import Entry
 from django.contrib import messages
 from django.core.paginator import Paginator
@@ -11,7 +11,24 @@ import os
 from django.conf import settings
 from django.db.models import Q
 import mimetypes
+from django.contrib.auth.forms import UserCreationForm
+
 # Create your views here.
+
+
+class RegisterView(View):
+    def get(self, request):
+        form = CreateUserForm()
+        return render(request, "PWRKapp/register.html", {
+            "form": form
+        })
+
+    def post(self, request):
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse("new-entry")
+                                        )
 
 
 class StartingPageView(View):

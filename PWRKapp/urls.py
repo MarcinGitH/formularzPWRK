@@ -8,5 +8,7 @@ urlpatterns = [
     path("entry-handling", views.EntryHandlingView.as_view(), name="entry-handling"),
     path("download/<str:file_type>/<int:id>",
          views.download, name="download-handling"),
-    path("register", views.RegisterView.as_view(), name="register")
+    path("register", views.RegisterView.as_view(), name="register"),
+    path("login", views.LoginView.as_view(), name="login"),
+    path("logout", views.logoutUser, name="logout")
 ]

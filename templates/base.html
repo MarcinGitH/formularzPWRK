@@ -11,7 +11,7 @@
       {% endblock %}
     </title>
     <link rel="stylesheet" href="{% static 'app.css' %}" />
-
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
     {% block css_files %}
 
     {% endblock %}
@@ -19,10 +19,19 @@
   <body>
     <header>
       <div id="top-bar">
-        <h2>Forumularz PWRK</h2>
+        <a id="title" href="{% url 'new-entry' %}">Formularz PWRK</a>
+
         <div class="reg-buttons-container">
-          <a href="{% url 'new-entry' %}" class="top-bar-buttons" draggable="false">Zaloguj się</a>
-          <a href="{% url 'register' %}" class="top-bar-buttons" draggable="false">Zarejestruj się</a>
+          {% if user_logged %}
+            <div class="username-box">
+              <i class="fa-solid fa-user"></i>
+              <span id="username">{{ request.user }}</span>
+            </div>
+            <a href="{% url 'logout' %}" class="top-bar-buttons" draggable="false">Wyloguj się</a>
+          {% else %}
+            <a href="{% url 'login' %}" class="top-bar-buttons" draggable="false">Zaloguj się</a>
+            <a href="{% url 'register' %}" class="top-bar-buttons" draggable="false">Zarejestruj się</a>
+          {% endif %}
         </div>
         {% comment %} <h3>{{ welcome_user }}</h3> {% endcomment %}
       </div>
@@ -36,9 +45,9 @@
         <li>
           <a href="{% url 'all-entries' %}" class="nav-button{% if nav_button_active == 2 %} nav-button-active{% endif %}" draggable="false">Wszystkie zgłoszenia</a>
         </li>
-        <li>
+        {% comment %} <li>
           <a href="{% url 'entry-handling' %}" class="nav-button{% if nav_button_active == 3 %} nav-button-active{% endif %}" draggable="false">Obsługa zgłoszeń</a>
-        </li>
+        </li> {% endcomment %}
       </ul>
     </nav>
 

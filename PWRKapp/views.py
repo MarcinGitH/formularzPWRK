@@ -11,13 +11,17 @@ import os
 from django.conf import settings
 from django.db.models import Q
 import mimetypes
-from django.contrib.auth.forms import UserCreationForm
-
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 # Create your views here.
 
 
 class RegisterView(View):
     def get(self, request):
+        if request.user.is_authenticated:
+            return HttpResponseRedirect(reverse("new-entry"))
+
         form = CreateUserForm()
         return render(request, "PWRKapp/register.html", {
             "form": form
@@ -27,8 +31,39 @@ class RegisterView(View):
         form = CreateUserForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse("new-entry")
+            user = form.cleaned_data.get("username")
+            messages.success(request, "Konto dla " +
+                             user + " zostało założone.")
+            return HttpResponseRedirect(reverse("login")
                                         )
+        return render(request, "PWRKapp/register.html", {
+            "form": form
+        })
+
+
+class LoginView(View):
+    def get(self, request):
+        if request.user.is_authenticated:
+            return HttpResponseRedirect(reverse("new-entry"))
+        return render(request, "PWRKapp/login.html")
+
+    def post(self, request):
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return HttpResponseRedirect(reverse("new-entry"))
+        else:
+            messages.info(request, "Niepoprawna nazwa użytkownika lub hasło")
+
+        return render(request, "PWRKapp/login.html")
+
+
+def logoutUser(request):
+    logout(request)
+    return HttpResponseRedirect(reverse("login"))
 
 
 class StartingPageView(View):
@@ -36,8 +71,13 @@ class StartingPageView(View):
         return HttpResponseRedirect(reverse("new-entry"))
 
 
+@method_decorator(login_required(login_url="login"), name='dispatch')
 class NewEntryView(View):
+
     def get(self, request):
+        userLogged = False
+        if request.user.is_authenticated:
+            userLogged = True
         # welcome_user = request.META.get('REMOTE_USER')
         test_list = []
         for i in range(1, 30000):
@@ -53,7 +93,8 @@ class NewEntryView(View):
         context = {
             "nav_button_active": 1,
             "comp_list": test_list,
-            "entry_form": entry
+            "entry_form": entry,
+            "user_logged": userLogged
         }
         return render(request, "PWRKapp/new_entry.html", context)
 
@@ -84,8 +125,12 @@ class NewEntryView(View):
         return render(request, "PWRKapp/new_entry.html", context)
 
 
+@method_decorator(login_required(login_url="login"), name='dispatch')
 class AllEntriesView(View):
     def get(self, request):
+        userLogged = False
+        if request.user.is_authenticated:
+            userLogged = True
         # Pobieranie wartości z formularza (jeśli istnieją)
         name_filter = request.GET.get('name', '')
         created_after = request.GET.get('created_after', '')
@@ -112,7 +157,8 @@ class AllEntriesView(View):
             'created_after': created_after,
             'admin_user': True,
             "entry_form": entry,
-            "page_number": page_number
+            "page_number": page_number,
+            "user_logged": userLogged
         })
 
     def post(self, request):

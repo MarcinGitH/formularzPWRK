@@ -1,92 +1,68 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% load static %}
 
-{% block title %}PWRK - Nowe zgłoszenie{% endblock title %}
+{% block title %}
+  PWRK - Nowe zgłoszenie
+{% endblock %}
 {% block css_files %}
-<link rel="stylesheet" href="{% static "PWRKapp/new_entry.css" %}">
-{% endblock css_files %}
+  <link rel="stylesheet" href="{% static 'PWRKapp/new_entry.css' %}" />
+{% endblock %}
 
 {% block content %}
-
-
-
-<section id="new-entry-form">
-    
-
-    <form action="{% url "new-entry" %}" method="POST" enctype="multipart/form-data" autocomplete="off">
-        {% csrf_token %}
-        <div id="new-entry-flex">
-            <div class="new-entry-column" id="new-entry-column-1">
-                <div class="form-control"> 
-                    {{entry_form.description_1.label_tag}}
-                    {{entry_form.description_1}}
-                </div>
-                <div class="form-control-inline">
-                    <div class="form-control {% if entry_form.type_of_employee.value == "Technolog"%}techno{% endif %}" id="type-of-employee-div"> 
-                        {{entry_form.type_of_employee.label_tag}}
-                        {{entry_form.type_of_employee}}
-                    </div>
-                    <div class="form-control {% if entry_form.type_of_employee.value == "Technolog"%}techno{% endif %}" id="type-of-tool-div"> 
-                        {{entry_form.type_of_tool.label_tag}}
-                        {{entry_form.type_of_tool}}
-                    </div>
-                </div>
-                <div class="form-control"> 
-                    {{entry_form.reason.label_tag}}
-                    {{entry_form.reason}}
-                </div>
-                <div class="form-control"> 
-                    {{entry_form.producer.label_tag}}
-                    {{entry_form.producer}}
-                </div>
-                <div class="form-control"> 
-                    {{entry_form.supplier.label_tag}}
-                    {{entry_form.supplier}}
-                </div>
-            </div>
-
-            <div class="new-entry-column {% if entry_form.type_of_employee.value == "Technolog"%}techno{% endif %}" id="new-entry-column-2">
-                <div class="form-control"> 
-                    {{entry_form.comments.label_tag}}
-                    {{entry_form.comments}}
-                </div>
-                <div class="form-control"> 
-                    {{entry_form.drawings_2d.label_tag}}
-                    {{entry_form.drawings_2d}}
-                </div>
-                <div class="form-control"> 
-                    {{entry_form.drawings_3d.label_tag}}
-                    {{entry_form.drawings_3d}}
-                </div>
-                <div class="form-control"> 
-                    {{entry_form.screen_catalog.label_tag}}
-                    {{entry_form.screen_catalog}}
-                </div>
-            </div>
+  <section id="new-entry-form">
+    <form action="{% url 'new-entry' %}" method="POST" enctype="multipart/form-data" autocomplete="off">
+      {% csrf_token %}
+      <input type="hidden" name="entry_employee" value="{{ request.user }}" />
+      <div id="new-entry-flex">
+        <div class="new-entry-column" id="new-entry-column-1">
+          <div class="form-control">{{ entry_form.description_1.label_tag }}
+            {{ entry_form.description_1 }}</div>
+          <div class="form-control-inline">
+            <div class="form-control {% if entry_form.type_of_employee.value == 'Technolog' %}techno{% endif %}" id="type-of-employee-div">{{ entry_form.type_of_employee.label_tag }}
+              {{ entry_form.type_of_employee }}</div>
+            <div class="form-control {% if entry_form.type_of_employee.value == 'Technolog' %}techno{% endif %}" id="type-of-tool-div">{{ entry_form.type_of_tool.label_tag }}
+              {{ entry_form.type_of_tool }}</div>
+          </div>
+          <div class="form-control">{{ entry_form.reason.label_tag }}
+            {{ entry_form.reason }}</div>
+          <div class="form-control">{{ entry_form.producer.label_tag }}
+            {{ entry_form.producer }}</div>
+          <div class="form-control">{{ entry_form.supplier.label_tag }}
+            {{ entry_form.supplier }}</div>
         </div>
 
-        
-        <p id="required-legend"><span>*</span> - pole wymagane</p>
+        <div class="new-entry-column {% if entry_form.type_of_employee.value == 'Technolog' %}techno{% endif %}" id="new-entry-column-2">
+          <div class="form-control">{{ entry_form.comments.label_tag }}
+            {{ entry_form.comments }}</div>
+          <div class="form-control">{{ entry_form.drawings_2d.label_tag }}
+            {{ entry_form.drawings_2d }}</div>
+          <div class="form-control">{{ entry_form.drawings_3d.label_tag }}
+            {{ entry_form.drawings_3d }}</div>
+          <div class="form-control">{{ entry_form.screen_catalog.label_tag }}
+            {{ entry_form.screen_catalog }}</div>
+        </div>
+      </div>
 
-        {% if messages %}
-            <p class="success-msg">{% for msg in messages %}{{msg}}{% endfor %}</p>
-        {% endif %}
-        
-        <button id="submit-button">Wyślij</button>
+      <p id="required-legend">
+        <span>*</span> - pole wymagane
+      </p>
+
+      {% if messages %}
+        <p class="success-msg">
+          {% for msg in messages %}
+            {{ msg }}
+          {% endfor %}
+        </p>
+      {% endif %}
+
+      <button id="submit-button">Wyślij</button>
     </form>
-    {{entry_form.errors}}
-</section>
-{% endblock content %}
-
-
-
+    {{ entry_form.errors }}
+  </section>
+{% endblock %}
 
 {% block script %}
-
-
-
-
-<script>
+  <script>
     var mylist = {{comp_list|safe}};
     
 
@@ -139,7 +115,4 @@
     checkIfTechno();
     checkIfSuccess();
 </script>
-
-{% endblock script %}
-
-
+{% endblock %}

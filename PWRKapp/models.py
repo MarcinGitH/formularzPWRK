@@ -1,15 +1,14 @@
 from django.db import models
-from django.core.validators import FileExtensionValidator
+from django.contrib.auth.models import User
 # Create your models here.
 
 
-class Employee(models.Model):
-    name = models.CharField(max_length=100)
-    aplication_access = models.BooleanField(null=True)
-    admin_access = models.BooleanField()
-
-    def __str__(self):
-        return self.name
+class Employee(User):
+    # user = models.OneToOneField(
+    #     User, on_delete=models.CASCADE, null=True, blank=True)
+    admin_accesss = models.BooleanField(default=False)
+    # def __str__(self):
+    #     return self.name
 
 
 class File(models.Model):
@@ -36,9 +35,9 @@ class Entry(models.Model):
     supplier = models.ForeignKey(
         ProducerSupplier, on_delete=models.PROTECT, null=True, related_name="supplier_data")
     entry_employee = models.ForeignKey(
-        Employee, on_delete=models.PROTECT, null=True, default=1, related_name="entry_employee_data")
+        Employee, on_delete=models.PROTECT, null=True, related_name="entry_employee_data")
     manage_employee = models.ForeignKey(
-        Employee, on_delete=models.PROTECT, null=True, blank=True, default=2, related_name="manage_employee_data")
+        Employee, on_delete=models.PROTECT, null=True, blank=True, related_name="manage_employee_data")
     drawings_2d = models.FileField(
         upload_to="drawings_2d", null=True, max_length=300, blank=True)
     drawings_3d = models.FileField(
@@ -47,7 +46,7 @@ class Entry(models.Model):
         upload_to="screen_catalog", null=True, max_length=300, blank=True)
     comments = models.TextField(max_length=1000, null=True, blank=True)
     entry_date = models.DateTimeField(
-        auto_now=True, blank=True)
+        null=True, blank=True)
     change_date = models.DateTimeField(
         blank=True, null=True)
 

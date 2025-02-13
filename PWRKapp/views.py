@@ -3,7 +3,7 @@ from django.views import View
 from django.http import HttpResponseRedirect, FileResponse, Http404, HttpResponse
 from django.urls import reverse
 from .forms import EntryForm, CreateUserForm
-from .models import Entry
+from .models import Entry, Employee
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.utils.dateparse import parse_date
@@ -14,6 +14,7 @@ import mimetypes
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.utils import timezone
 # Create your views here.
 
 
@@ -107,6 +108,9 @@ class NewEntryView(View):
                           form_type="new_entry_form")
 
         if entry.is_valid():
+            employee = Employee.objects.filter(pk=request.user).first()
+            entry.instance.entry_employee = employee
+            entry.instance.entry_date = timezone.now()
             entry.save()
 
             # new_entry.fields['type_of_employee'].initial = entry.cleaned_data["type_of_employee"]
@@ -149,13 +153,15 @@ class AllEntriesView(View):
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
 
+        employee = Employee.objects.filter(pk=request.user).first()
+
         entry = EntryForm(form_type="all_entry_form")
         return render(request, 'PWRKapp/all_entries.html', {
             "nav_button_active": 2,
             'page_obj': page_obj,
             'name_filter': name_filter,
             'created_after': created_after,
-            'admin_user': True,
+            'admin_user': employee.admin_accesss,
             "entry_form": entry,
             "page_number": page_number,
             "user_logged": userLogged
@@ -177,6 +183,10 @@ class AllEntriesView(View):
             record.comments = entry.cleaned_data["comments"]
             record.status = entry.cleaned_data["status"]
 
+            employee = Employee.objects.filter(pk=request.user).first()
+            record.manage_employee = employee
+
+            record.change_date = timezone.now()
             record.save(form_type="all_entries_form")
 
             page_number = request.POST.get('page')

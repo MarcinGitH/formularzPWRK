@@ -1,5 +1,5 @@
 from django import forms
-from .models import Entry, ProducerSupplier
+from .models import Entry, Employee
 import os
 from django.db.models.fields import BLANK_CHOICE_DASH
 from django.contrib.auth.models import User
@@ -100,7 +100,7 @@ class CreateUserForm(UserCreationForm):
 
     class Meta:
 
-        model = User
+        model = Employee
         fields = ["username", "email", "password1", "password2"]
 
         labels = {

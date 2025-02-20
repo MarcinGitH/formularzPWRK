@@ -622,3 +622,32 @@ input[type="file"] {
 #empl-column {
     width: 200px;
 }
+
+.edit-msg {
+    /* display: none; */
+
+    /* margin: auto; */
+    text-align: center;
+    background: linear-gradient(to right, #16c91077, #1a921680);
+    color: #000000;
+    font-size: 1.1rem;
+    width: 50%;
+    line-height: 50px;
+    height: 50px;
+    padding: 0 15px;
+    /* border-radius: 25px; */
+    font-weight: bold;
+    box-shadow: 0 0 8px 3px #388549;
+    opacity: 0.7;
+    transition: ease, 500ms;
+    /* position: fixed; */
+    margin: 15px auto;
+}
+
+.edit-msg.opacity-0 {
+    opacity: 0;
+}
+
+.edit-msg.hidden {
+    display: none;
+}

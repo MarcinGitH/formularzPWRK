@@ -192,7 +192,7 @@ class AllEntriesView(View):
             page_number = request.POST.get('page')
             # new_entry.fields['type_of_employee'].initial = entry.cleaned_data["type_of_employee"]
 
-            # messages.success(request, "Zgłoszenie zostało wysłane")
+            messages.success(request, "Zgłoszenie zostało zapisane")
             # request.session["employee_type"] = entry.cleaned_data["type_of_employee"]
 
             return HttpResponseRedirect(reverse("all-entries") + f"?page={page_number}")

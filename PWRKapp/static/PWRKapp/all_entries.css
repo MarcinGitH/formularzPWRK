@@ -601,3 +601,24 @@ input[type="file"] {
 .errorlist li {
     color: red;
 }
+
+
+#id-column {
+    width: 80px;
+}
+
+#status-column {
+    width: 280px;
+}
+
+#pwrk-column {
+    width: 190px;
+}
+
+#date-column {
+    width: 200px;
+}
+
+#empl-column {
+    width: 200px;
+}

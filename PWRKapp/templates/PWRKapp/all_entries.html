@@ -16,25 +16,25 @@
 {% block content %}
   <section class="content">
     <!-- Formularz filtrujący -->
-    <div class="filter-form">
+    {% comment %} <div class="filter-form">
       <form method="GET">
         <input type="text" name="name" placeholder="Filtruj po nazwie" value="{{ name_filter }}" />
         <input type="date" name="created_after" value="{{ created_after }}" />
         <button type="submit" class="btn">Filtruj</button>
       </form>
-    </div>
+    </div> {% endcomment %}
 
     <!-- Tabela z nagłówkami -->
     <div class="item-list-container">
       <table class="data-table">
         <thead>
           <tr>
-            <th style="width: 80px;">ID</th>
-            <th style="width: 280px;">Status</th>
-            <th style="width: 190px;">Numer PWRK</th>
+            <th id="id-column">ID</th>
+            <th id="status-column">Status</th>
+            <th id="pwrk-column">Numer PWRK</th>
             <th>Opis komponentu 1</th>
-            <th style="width: 200px;">Data zgłoszenia</th>
-            <th style="width: 200px;">Zgłaszający</th>
+            <th id="date-column">Data zgłoszenia</th>
+            <th id="empl-column">Zgłaszający</th>
             {% comment %} <th>Obsługujący</th>
             <th>Data zmiany statusu</th> {% endcomment %}
           </tr>
@@ -92,7 +92,7 @@
 
     {% if not admin_user %}
       <!-- Okienko z danymi dla pracownika bez uparwnien admina -->
-      <div id="data-popup" class="data-popup">
+      <div id="data-popup" class="data-popup data-popup-view">
         <div id="popup-header">
           <span>Szczegóły zgłoszenia</span>
           <button class="popup-close" id="popup-close"><i class="fa-solid fa-xmark"></i></button>
